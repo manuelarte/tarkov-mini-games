@@ -1,21 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {TarkovapiService} from '../tarkovapi.service';
-import {tap} from 'rxjs/operators';
+import { Component } from '@angular/core';
+import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-sorting',
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './sorting.component.html',
-  styleUrls: ['./sorting.component.scss']
+  styleUrl: './sorting.component.css'
 })
-export class SortingComponent implements OnInit {
-
-  constructor(private api: TarkovapiService) { }
-
-  ngOnInit() {
-    console.log('Calling get ammo');
-    this.api.getAmmo().pipe(
-        tap(console.log),
-    ).subscribe(value => console.log('value', value));
-  }
+export class SortingComponent {
 
 }
