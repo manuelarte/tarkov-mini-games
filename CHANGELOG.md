@@ -9,3 +9,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Adding sorting ammo minigame
+- Adding guess the ammo minigame

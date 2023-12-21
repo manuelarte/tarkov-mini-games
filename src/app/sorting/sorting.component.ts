@@ -22,6 +22,7 @@ import {
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import Utils from "../utils";
 
 class SortingBy {
   name: string
@@ -99,7 +100,7 @@ export class SortingComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['seed']) {
         this.seed = +params['seed']; // Convert to number
-        this.sortedOption = this.getRandomNElements(SORTING_OPTIONS, 1)[0];
+        this.sortedOption = Utils.getRandomNElements(SORTING_OPTIONS, this.seed, 1)[0];
       } else {
         this.seed = Math.floor(Math.random() * 1000);
 
@@ -130,33 +131,9 @@ export class SortingComponent implements OnInit {
     this.sortingGame = new SortingGame(this.ammos, this.sortedOption)
   }
 
-  private getRandomNElements<T>(array: T[], n: number): T[] {
-    const copy = [...array]
-    return this.shuffle(copy, this.seed).slice(0, n)
-  }
 
   private getRandomAmmos(ammos: Ammo[]): Ammo[] {
-    return this.getRandomNElements(ammos, this.numberOfItems)
-  }
-
-  private shuffle<T>(array: T[], seed: number): T[] {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-    seed = seed || 1;
-    let random = function() {
-      var x = Math.sin(seed++) * 10000;
-      return x - Math.floor(x);
-    };
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(random() * currentIndex);
-      currentIndex -= 1;
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-    return array;
+    return Utils.getRandomNElements(ammos, this.seed, this.numberOfItems)
   }
 
   dropAmmo(event: CdkDragDrop<Ammo[]>) {

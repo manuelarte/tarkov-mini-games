@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map} from "rxjs/operators";
 import {Ammo} from "./app/ammo.model";
@@ -14,7 +14,7 @@ export class TarkovApiService {
   ) { }
 
   getAmmo(): Observable<Ammo[]> {
-    const queryAmmo = `ammo { item { id name shortName wikiLink iconLink } damage penetrationPower penetrationChance tracer stackMaxSize caliber }`;
+    const queryAmmo = `ammo { item { id name shortName weight wikiLink iconLink inspectImageLink } damage penetrationPower penetrationChance tracer stackMaxSize caliber }`;
 
     const query =  { query: `{ ${queryAmmo} }` };
     return this.http.post<DataWrapper>('https://api.tarkov.dev/graphql', query).pipe(

@@ -1,0 +1,31 @@
+<p>guessing works!</p>
+
+
+<mat-progress-spinner *ngIf="isLoadingAmmos" mode="indeterminate"></mat-progress-spinner>
+
+<div>
+
+  <mat-grid-list cols="3" rowHeight="3:1">
+    @for (ammo of ammos; track ammo) {
+      <mat-grid-tile colspan="1">
+        <img [ngSrc]="ammo.item.inspectImageLink" fill priority alt="ammo">
+      </mat-grid-tile>
+      <mat-grid-tile colspan="2">
+        <mat-form-field class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input type="text"
+                 placeholder="Pick one"
+                 aria-label="Number"
+                 matInput
+                 [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" requireSelection  [displayWith]="displayFn">
+            @for (possibleAmmo of allAmmos; track possibleAmmo) {
+              <mat-option [value]="possibleAmmo">{{possibleAmmo.item.name}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </mat-grid-tile>
+    }
+
+  </mat-grid-list>
+</div>
