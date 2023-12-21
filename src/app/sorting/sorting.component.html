@@ -15,4 +15,7 @@
       <mat-grid-tile-footer *ngIf="isCompleted">Puzzle completed in {{numberOfMoves}} moves!</mat-grid-tile-footer>
     </mat-grid-tile>
   </mat-grid-list>
+  <button mat-mini-fab color="primary" (click)="newGame()" aria-label="Example icon button with a menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
 </div>
