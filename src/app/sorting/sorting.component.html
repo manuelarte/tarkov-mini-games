@@ -1,5 +1,9 @@
 <p>sorting works!</p>
 
-<div *ngIf="ammos">
+<ng-template [ngIf]="isLoadingAmmos">
+  <mat-progress-spinner class="example-margin" mode="indeterminate"></mat-progress-spinner>
+</ng-template>
+
+<div *ngIf="!isLoadingAmmos && ammos">
   <app-ammo-list *ngFor="let ammo of ammos" [ammo]="ammo"></app-ammo-list>
 </div>
