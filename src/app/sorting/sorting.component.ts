@@ -12,11 +12,19 @@ import {Ammo} from "../ammo.model";
 import {AmmoListComponent} from "../ammo-list/ammo-list.component";
 import {finalize} from "rxjs";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDragPlaceholder,
+  CdkDropList,
+  moveItemInArray,
+  transferArrayItem
+} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-sorting',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder],
   templateUrl: './sorting.component.html',
   styleUrl: './sorting.component.css'
 })
@@ -57,6 +65,11 @@ export class SortingComponent implements OnInit {
 
   getRandomAmmos(ammos: Ammo[]): Ammo[] {
     return this.shuffle(ammos, this.seed).slice(0, this.numberOfItems)
+  }
+
+  dropAmmo(event: CdkDragDrop<Ammo[]>) {
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex)
+    console.log(this.ammos)
   }
 
   shuffle(array: Ammo[], seed: number): Ammo[] {
