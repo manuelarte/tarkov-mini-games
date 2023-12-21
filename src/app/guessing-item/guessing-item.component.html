@@ -1,16 +1,26 @@
-<mat-grid-tile colspan="1">
-  <img [ngSrc]="solution.item.inspectImageLink" fill priority alt="ammo">
-</mat-grid-tile>
-<mat-grid-tile colspan="2">
+<mat-expansion-panel hideToggle disabled [expanded]="!isCompleted" class="example-headers-align">
+    @if (isCompleted) {
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <img [ngSrc]="solution.item.inspectImageLink" height="50" width="73" priority alt="ammo">
+      </mat-panel-title>
+      <mat-panel-description>
+        {{solution.item.name}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    }
+
+
+  <img [ngSrc]="solution.item.inspectImageLink" height="50" width="73" priority alt="ammo">
   <form class="example-form">
     <mat-form-field class="example-full-width">
-      <mat-label>Assignee</mat-label>
+      <mat-label>Ammo</mat-label>
       <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-autocomplete  #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="optionSelected($event.option.value)">
         @for (option of filteredOptions | async; track option) {
-          <mat-option [value]="option">{{option.item.name}}</mat-option>
+        <mat-option [value]="option">{{option.item.name}}</mat-option>
         }
       </mat-autocomplete>
     </mat-form-field>
   </form>
-</mat-grid-tile>
+</mat-expansion-panel>

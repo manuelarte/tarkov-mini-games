@@ -1,10 +1,6 @@
-<p>guessing works!</p>
-
 @if (isLoadingAmmos) {
   <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 } @else {
-  <mat-grid-list cols="3" rowHeight="3:1">
   <app-guessing-item [solution]=ammos[0] [options]=allAmmos></app-guessing-item>
-  </mat-grid-list>
 }
 

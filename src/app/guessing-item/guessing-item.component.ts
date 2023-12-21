@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Ammo} from '../ammo.model';
 import {MatOptionModule} from '@angular/material/core';
 import {MatGridListModule} from '@angular/material/grid-list';
@@ -9,6 +9,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EMPTY, Observable, startWith} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-guessing-item',
@@ -23,11 +24,12 @@ import {map} from 'rxjs/operators';
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
+    MatExpansionModule,
   ],
   templateUrl: './guessing-item.component.html',
   styleUrl: './guessing-item.component.css'
 })
-export class GuessingItemComponent {
+export class GuessingItemComponent implements OnInit{
   // @ts-ignore
   @Input({required: true}) solution: Ammo
   @Input({required: true}) options: Ammo[] = []
@@ -35,7 +37,12 @@ export class GuessingItemComponent {
 
   myControl = new FormControl<string | Ammo>('');
   filteredOptions: Observable<Ammo[]> = EMPTY;
+
+  protected isCompleted = false
   constructor() {
+  }
+
+  ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -49,9 +56,12 @@ export class GuessingItemComponent {
     return ammo && ammo.item ? ammo.item.name : '';
   }
 
+  optionSelected(value: Ammo) {
+    this.isCompleted = value === this.solution
+  }
+
   private _filter(name: string): Ammo[] {
     const filterValue = name.toLowerCase();
-
     return this.options.filter(option => option.item.name.toLowerCase().includes(filterValue));
   }
 
