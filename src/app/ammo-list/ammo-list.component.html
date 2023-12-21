@@ -1,0 +1,8 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <!-- background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg'); -->
+    <div mat-card-avatar class="example-header-image" [ngStyle]="{'background-image': 'url(' + ammo.item.iconLink + ')'}"></div>
+    <mat-card-title>{{ammo.item.shortName}}</mat-card-title>
+    <mat-card-subtitle>{{ammo.caliber}}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>

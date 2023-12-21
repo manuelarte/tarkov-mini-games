@@ -1,1 +1,5 @@
 <p>sorting works!</p>
+
+<div *ngIf="ammos">
+  <app-ammo-list *ngFor="let ammo of ammos" [ammo]="ammo"></app-ammo-list>
+</div>
