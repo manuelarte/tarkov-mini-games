@@ -41,7 +41,7 @@ class SortingBy {
 })
 export class SortingComponent implements OnInit {
 
-  protected numberOfItems = 6
+  protected numberOfItems = 5
   protected seed: number = 0
 
   protected isLoadingAmmos = true
@@ -64,6 +64,7 @@ export class SortingComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['seed']) {
         this.seed = +params['seed']; // Convert to number
+        this.sortedOption = this.options[Math.floor(Math.random() * this.options.length)];
       } else {
         this.seed = Math.floor(Math.random() * 1000);
 
@@ -82,7 +83,6 @@ export class SortingComponent implements OnInit {
     ).subscribe(ammos => {
       this.ammos = this.getRandomAmmos(ammos)
       this.solution = [...this.ammos]
-      this.sortedOption = this.options[1]
       this.solution.sort((a, b) => {
         if (this.sortedOption.f(a) > this.sortedOption.f(b)) {
           return -1
