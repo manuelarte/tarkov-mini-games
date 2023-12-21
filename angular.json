@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "test-angular": {
+    "tarkov-mini-games": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/test-angular",
+            "outputPath": "dist/tarkov-mini-games",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -58,10 +58,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "test-angular:build:production"
+              "buildTarget": "tarkov-mini-games:build:production"
             },
             "development": {
-              "buildTarget": "test-angular:build:development"
+              "buildTarget": "tarkov-mini-games:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -69,7 +69,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "test-angular:build"
+            "buildTarget": "tarkov-mini-games:build"
           }
         },
         "test": {

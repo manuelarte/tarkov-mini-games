@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {CommonModule} from "@angular/common";
+import {TarkovApiService} from "../../tarkov-api.service";
 
 @Component({
   selector: 'app-sorting',
@@ -9,6 +10,13 @@ import {CommonModule} from "@angular/common";
   templateUrl: './sorting.component.html',
   styleUrl: './sorting.component.css'
 })
-export class SortingComponent {
+export class SortingComponent implements OnInit {
+  constructor(
+    private api: TarkovApiService
+  ) {
+  }
 
+  ngOnInit(): void {
+        this.api.getAmmo().subscribe(d => console.log("data", d[0]))
+    }
 }

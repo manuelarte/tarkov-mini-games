@@ -18,7 +18,7 @@ import {map, shareReplay} from "rxjs/operators";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'test-angular';
+  title = 'tarkov-mini-games';
   private breakpointObserver = inject(BreakpointObserver);
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)

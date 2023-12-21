@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TarkovapiService } from './tarkovapi.service';
+import { TarkovApiService } from './tarkov-api.service';
 
 describe('TarkovapiService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: TarkovapiService = TestBed.get(TarkovapiService);
+    const service: TarkovApiService = TestBed.get(TarkovApiService);
     expect(service).toBeTruthy();
   });
 });
