@@ -1,15 +1,17 @@
 <div class="sorting-div">
-  <h1>Sort the following ammunition by damage</h1>
-  <ng-template [ngIf]="isLoadingAmmos">
-    <mat-progress-spinner class="example-margin" mode="indeterminate"></mat-progress-spinner>
-  </ng-template>
 
-  <div *ngIf="!isLoadingAmmos && ammos" cdkDropList class="ammo-list" [cdkDropListData]="ammos" (cdkDropListDropped)="dropAmmo($event)">
-  @for (ammo of ammos; track ammo) {
-    <div class="ammo-box" cdkDrag>
-        <app-ammo-list class="ammo-entry" [ammo]="ammo"></app-ammo-list>
-    </div>
-  }
-  </div>
+  <mat-grid-list cols="2">
+    <mat-grid-tile>
+      <h1>Sort the following ammunition by damage</h1>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div *ngIf="!isLoadingAmmos && ammos" cdkDropList class="ammo-list" [cdkDropListData]="ammos" (cdkDropListDropped)="dropAmmo($event)">
+      @for (ammo of ammos; track ammo) {
+        <div class="ammo-box" cdkDrag [cdkDragDisabled]="isFinished" [ngStyle]="{'cursor': isFinished ? 'default' : 'move'}">
+          <app-ammo-list class="ammo-entry" [ammo]="ammo"></app-ammo-list>
+        </div>
+      }
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>
-

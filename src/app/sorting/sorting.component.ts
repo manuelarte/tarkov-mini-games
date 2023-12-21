@@ -20,11 +20,12 @@ import {
   moveItemInArray,
   transferArrayItem
 } from "@angular/cdk/drag-drop";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @Component({
   selector: 'app-sorting',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder, MatGridListModule],
   templateUrl: './sorting.component.html',
   styleUrl: './sorting.component.css'
 })
@@ -34,6 +35,7 @@ export class SortingComponent implements OnInit {
   protected seed: number = 0
   protected isLoadingAmmos = true
   protected ammos: Ammo[] = []
+  protected isFinished = false
   constructor(
     private route: ActivatedRoute,
     private router: Router,
