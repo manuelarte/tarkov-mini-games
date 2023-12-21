@@ -22,6 +22,16 @@ import {
 } from "@angular/cdk/drag-drop";
 import {MatGridListModule} from "@angular/material/grid-list";
 
+class SortingBy {
+  name: string
+  f: (a: Ammo) => number
+
+  constructor(name: string, f: (a: Ammo) => number) {
+    this.name = name
+    this.f = f
+  }
+}
+
 @Component({
   selector: 'app-sorting',
   standalone: true,
@@ -33,9 +43,16 @@ export class SortingComponent implements OnInit {
 
   protected numberOfItems = 6
   protected seed: number = 0
+
   protected isLoadingAmmos = true
   protected ammos: Ammo[] = []
-  protected isFinished = false
+
+  protected solution: Ammo[] = []
+  protected numberOfMoves = 0
+  protected isCompleted = false
+
+  protected options = [new SortingBy("damage", (a: Ammo) => a.damage), new SortingBy("penetration power", (a: Ammo) => a.penetrationPower)]
+  protected sortedOption: SortingBy = this.options[0];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -62,19 +79,44 @@ export class SortingComponent implements OnInit {
     this.isLoadingAmmos = true
     this.api.getAmmo().pipe(
       finalize(() => this.isLoadingAmmos = false)
-    ).subscribe(ammos => this.ammos = this.getRandomAmmos(ammos))
+    ).subscribe(ammos => {
+      this.ammos = this.getRandomAmmos(ammos)
+      this.solution = [...this.ammos]
+      this.sortedOption = this.options[1]
+      this.solution.sort((a, b) => {
+        if (this.sortedOption.f(a) > this.sortedOption.f(b)) {
+          return -1
+        } else if (this.sortedOption.f(a) < this.sortedOption.f(b)) {
+          return 1
+        } else {
+          return 0
+        }
+      })
+      console.log(this.solution)
+    })
   }
 
-  getRandomAmmos(ammos: Ammo[]): Ammo[] {
+  private getRandomAmmos(ammos: Ammo[]): Ammo[] {
     return this.shuffle(ammos, this.seed).slice(0, this.numberOfItems)
   }
 
   dropAmmo(event: CdkDragDrop<Ammo[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex)
-    console.log(this.ammos)
+    if (event.currentIndex != event.previousIndex) {
+      this.numberOfMoves++
+      this.isCompleted = this.checkSolution()
+    }
   }
 
-  shuffle(array: Ammo[], seed: number): Ammo[] {
+  private checkSolution(): boolean {
+    // TODO compare by...
+    if (this.ammos.length == this.solution.length) {
+      return this.ammos.every((e, index) => this.sortedOption.f(e) === this.sortedOption.f(this.solution[index]))
+    }
+    return false
+  }
+
+  private shuffle(array: Ammo[], seed: number): Ammo[] {
     let currentIndex = array.length, temporaryValue, randomIndex;
     seed = seed || 1;
     let random = function() {
