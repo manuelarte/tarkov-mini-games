@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TarkovApiService} from "../../tarkov-api.service";
-import {EMPTY, finalize, Observable, startWith} from 'rxjs';
+import {finalize, Observable} from 'rxjs';
 import {Ammo} from "../ammo.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
@@ -10,9 +10,8 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatDividerModule} from "@angular/material/divider";
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {map} from 'rxjs/operators';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {GuessingItemComponent} from '../guessing-item/guessing-item.component';
 
 
 export interface User {
@@ -25,13 +24,7 @@ export interface User {
     CommonModule,
     MatProgressSpinnerModule,
     MatGridListModule,
-    MatAutocompleteModule,
-    MatFormFieldModule,
-    MatInputModule,
-    NgOptimizedImage,
-    MatDividerModule,
-    FormsModule,
-    ReactiveFormsModule,
+    GuessingItemComponent,
   ],
   templateUrl: './guessing.component.html',
   styleUrl: './guessing.component.css'
@@ -43,9 +36,6 @@ export class GuessingComponent implements OnInit{
 
   protected allAmmos: Ammo[] = []
   protected isLoadingAmmos = true
-
-  myControl = new FormControl<string | Ammo>('');
-  filteredOptions: Observable<Ammo[]> = EMPTY;
 
   protected ammos: Ammo[] = []
   constructor(
@@ -71,28 +61,10 @@ export class GuessingComponent implements OnInit{
         this.allAmmos = allAmmos
         this.ammos = Utils.getRandomNElements(this.allAmmos, this.seed, this.numberOfItems)
 
-        this.filteredOptions = this.myControl.valueChanges.pipe(
-          startWith(''),
-          map(value => {
-            const name = typeof value === 'string' ? value : value?.item.name;
-            return name ? this._filter(name as string) : this.allAmmos.slice();
-          }),
-        );
-
       })
 
     });
 
-  }
-
-  displayFn(ammo: Ammo): string {
-    return ammo && ammo.item ? ammo.item.name : '';
-  }
-
-  private _filter(name: string): Ammo[] {
-    const filterValue = name.toLowerCase();
-
-    return this.allAmmos.filter(option => option.item.name.toLowerCase().includes(filterValue));
   }
 
   private loadAmmos(): Observable<Ammo[]> {
