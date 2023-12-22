@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {Ammo} from '../ammo.model';
 import {ErrorStateMatcher, MatOptionModule} from '@angular/material/core';
 import {MatGridListModule} from '@angular/material/grid-list';
@@ -20,6 +20,15 @@ import {map} from 'rxjs/operators';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle
+} from "@angular/material/dialog";
 
 
 class AmmoStateMatcher implements ErrorStateMatcher {
@@ -70,7 +79,7 @@ export class GuessingItemComponent implements OnInit{
   filteredOptions: Observable<Ammo[]> = EMPTY;
 
   protected isCompleted = false
-  constructor() {
+  constructor(public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -101,4 +110,31 @@ export class GuessingItemComponent implements OnInit{
   }
 
 
+  openImageDialog(inspectImageLink: string) {
+    this.dialog.open(AmmoImageDialog, {
+      width: '512px',
+      data: {inspectImageLink: inspectImageLink},
+    });
+  }
+
+  closeImageDialog() {
+    this.dialog.closeAll()
+  }
+}
+
+@Component({
+  selector: 'ammo-image-dialog',
+  template: '<img class="ammo-image" [ngSrc]="data.inspectImageLink" height="350" width="512" priority alt="ammo">',
+  standalone: true,
+  imports: [CommonModule, NgOptimizedImage, MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
+})
+class AmmoImageDialog {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {
+  }
+}
+
+export interface DialogData {
+  inspectImageLink: string;
 }
