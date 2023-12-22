@@ -4,16 +4,19 @@ import {finalize, Observable} from 'rxjs';
 import {Ammo} from "../ammo.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {CommonModule, NgOptimizedImage} from "@angular/common";
+import {CommonModule} from "@angular/common";
 import Utils from "../utils";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {GuessingItemComponent} from '../guessing-item/guessing-item.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 
-
-export interface User {
-  name: string;
+const FILTER_AMMO = (x: Ammo) => {
+  const is9x18 = x.item.name.startsWith("9x18mm")
+  const isGrenade = x.item.name.startsWith("40x46mm")
+  const isFlare = x.item.name.startsWith("26x75mm flare")
+  return !is9x18 && !isFlare && !isGrenade
 }
+
 @Component({
   selector: 'app-guessing',
   standalone: true,
@@ -56,11 +59,9 @@ export class GuessingComponent implements OnInit{
         });
       }
       this.loadAmmos().subscribe(allAmmos => {
-        this.allAmmos = allAmmos
+        this.allAmmos = allAmmos.filter(FILTER_AMMO)
         this.ammos = Utils.getRandomNElements(this.allAmmos, this.seed, this.numberOfItems)
-
       })
-
     });
 
   }
