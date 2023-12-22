@@ -1,7 +1,10 @@
 <mat-card class="example-card">
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image" [ngStyle]="{'background-image': 'url(' + ammo.item.iconLink + ')'}"></div>
-    <mat-card-title>{{ammo.item.shortName}}</mat-card-title>
-    <mat-card-subtitle>{{ammo.caliber}}</mat-card-subtitle>
+    <img mat-card-avatar height="50" width="50" [ngSrc]="ammo.item.iconLink" priority alt="ammo-image">
+    <mat-card-title-group>
+      <mat-card-title>{{ammo.item.shortName}}</mat-card-title>
+      <mat-card-subtitle>{{ammo.caliber}}</mat-card-subtitle>
+      <mat-icon aria-hidden="false" aria-label="up and down" fontIcon="reorder"></mat-icon>
+    </mat-card-title-group>
   </mat-card-header>
 </mat-card>

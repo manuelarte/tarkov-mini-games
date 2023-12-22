@@ -10,7 +10,9 @@
   </div>
   <div *ngIf="isCompleted">Puzzle completed in {{sortingGame.numberOfTries}} moves!</div>
 
-  <button mat-mini-fab color="primary" (click)="newGame()" aria-label="Example icon button with a menu icon">
+  <button mat-mini-fab color="primary" (click)="newGame()"
+          matTooltip="New game"
+          aria-label="Example icon button with a menu icon">
     <mat-icon>refresh</mat-icon>
   </button>
 

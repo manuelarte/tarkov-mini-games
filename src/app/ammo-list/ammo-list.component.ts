@@ -1,14 +1,17 @@
 import {Component, Input} from '@angular/core';
 import {Ammo} from "../ammo.model";
 import {MatCardModule} from "@angular/material/card";
-import {CommonModule} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-ammo-list',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule
+    NgOptimizedImage,
+    MatCardModule,
+    MatIconModule
   ],
   templateUrl: './ammo-list.component.html',
   styleUrl: './ammo-list.component.css'

@@ -23,6 +23,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import Utils from "../utils";
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 class SortingBy {
   name: string
@@ -74,7 +75,7 @@ const SORTING_OPTIONS = [DAMAGE, PENETRATION_POWER]
 @Component({
   selector: 'app-sorting',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder, MatGridListModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder, MatGridListModule, MatIconModule, MatButtonModule, MatTooltipModule],
   templateUrl: './sorting.component.html',
   styleUrl: './sorting.component.css'
 })
@@ -146,6 +147,7 @@ export class SortingComponent implements OnInit {
   }
 
   newGame() {
+    this.isCompleted = false
     this.router.navigateByUrl('/sorting',{skipLocationChange:true}).then(()=>{
       this.router.navigate([], {
         relativeTo: this.route,
