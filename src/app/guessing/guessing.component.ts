@@ -7,11 +7,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
 import Utils from "../utils";
 import {MatGridListModule} from "@angular/material/grid-list";
-import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import {MatInputModule} from "@angular/material/input";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {GuessingItemComponent} from '../guessing-item/guessing-item.component';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 
 export interface User {
@@ -25,6 +22,7 @@ export interface User {
     MatProgressSpinnerModule,
     MatGridListModule,
     GuessingItemComponent,
+    MatExpansionModule,
   ],
   templateUrl: './guessing.component.html',
   styleUrl: './guessing.component.css'

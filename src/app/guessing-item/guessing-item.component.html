@@ -2,7 +2,7 @@
     @if (isCompleted) {
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <img [ngSrc]="solution.item.inspectImageLink" height="50" width="73" priority alt="ammo">
+        <img class="ammo-image" [ngSrc]="solution.item.inspectImageLink" height="30" width="43.8" priority alt="ammo">
       </mat-panel-title>
       <mat-panel-description>
         {{solution.item.name}}
@@ -10,8 +10,7 @@
     </mat-expansion-panel-header>
     }
 
-
-  <img [ngSrc]="solution.item.inspectImageLink" height="50" width="73" priority alt="ammo">
+  <img class="ammo-image" [ngSrc]="solution.item.inspectImageLink" height="30" width="43.8" priority alt="ammo">
   <form class="example-form">
     <mat-form-field class="example-full-width">
       <mat-label>Ammo</mat-label>

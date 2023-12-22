@@ -1,4 +1,11 @@
-.example-headers-align .mat-expansion-panel-header-description {
+.example-headers-align {
+}
+
+.ammo-image {
+  padding: 10px;
+}
+
+.mat-expansion-panel-body {
   justify-content: space-between;
   align-items: center;
 }

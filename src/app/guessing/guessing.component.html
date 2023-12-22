@@ -1,6 +1,11 @@
 @if (isLoadingAmmos) {
   <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 } @else {
-  <app-guessing-item [solution]=ammos[0] [options]=allAmmos></app-guessing-item>
+  <div class="accordion-wrapper">
+    <mat-accordion class="example-headers-align" multi>
+      @for (ammo of ammos; track ammo) {
+        <app-guessing-item [solution]=ammo [options]=allAmmos></app-guessing-item>
+      }
+    </mat-accordion>
+  </div>
 }
-
