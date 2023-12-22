@@ -40,7 +40,7 @@ const FILTER_AMMO = (x: Ammo) => {
 export class GuessingComponent implements OnInit{
 
   protected seed = 0
-  protected numberOfItems = 5
+  protected numberOfItems = 4
 
   protected allAmmos: Ammo[] = []
   protected isLoadingAmmos = true
