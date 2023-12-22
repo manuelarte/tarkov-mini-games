@@ -9,6 +9,7 @@ import Utils from "../utils";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {GuessingItemComponent} from '../guessing-item/guessing-item.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import {GuessingGame} from '../guessing-game';
 
 const FILTER_AMMO = (x: Ammo) => {
   const is9x18 = x.item.name.startsWith("9x18mm")
@@ -73,4 +74,7 @@ export class GuessingComponent implements OnInit{
     )
   }
 
+  guessed($event: GuessingGame<Ammo>) {
+    console.log($event)
+  }
 }

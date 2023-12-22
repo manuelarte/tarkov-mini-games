@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
 import {Ammo} from '../ammo.model';
 import {ErrorStateMatcher, MatOptionModule} from '@angular/material/core';
 import {MatGridListModule} from '@angular/material/grid-list';
@@ -29,6 +29,7 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
+import {GuessingGame} from '../guessing-game';
 
 
 class AmmoStateMatcher implements ErrorStateMatcher {
@@ -38,10 +39,10 @@ class AmmoStateMatcher implements ErrorStateMatcher {
   }
 }
 
-class WrongAmmoError {
-  guess: Ammo
+class WrongGuessError<T> {
+  guess: T
 
-  constructor(guess: Ammo) {
+  constructor(guess: T) {
     this.guess = guess
   }
 }
@@ -70,7 +71,10 @@ export class GuessingItemComponent implements OnInit{
   // @ts-ignore
   @Input({required: true}) solution: Ammo
   @Input({required: true}) options: Ammo[] = []
+  @Output() guessedEvent = new EventEmitter<GuessingGame<Ammo>>();
 
+  // @ts-ignore
+  protected guessingGame: GuessingGame<Ammo>
 
   // @ts-ignore
   protected guessAmmoControl = new FormControl<string | Ammo>('', [Validators.required]);
@@ -83,6 +87,8 @@ export class GuessingItemComponent implements OnInit{
   }
 
   ngOnInit() {
+    this.guessingGame = new GuessingGame(this.solution)
+
     this.filteredOptions = this.guessAmmoControl.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -97,10 +103,12 @@ export class GuessingItemComponent implements OnInit{
   }
 
   optionSelected(value: Ammo) {
-    this.isCompleted = value === this.solution
+    this.isCompleted = this.guessingGame.guess(value)
 
     if (!this.isCompleted) {
-      this.guessAmmoControl.setErrors({'wrong_guess': new WrongAmmoError(value)})
+      this.guessAmmoControl.setErrors({'wrong_guess': new WrongGuessError(value)})
+    } else {
+      this.guessedEvent.emit(this.guessingGame)
     }
   }
 
@@ -117,9 +125,6 @@ export class GuessingItemComponent implements OnInit{
     });
   }
 
-  closeImageDialog() {
-    this.dialog.closeAll()
-  }
 }
 
 @Component({
