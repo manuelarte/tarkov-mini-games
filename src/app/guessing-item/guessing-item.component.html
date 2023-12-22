@@ -9,12 +9,22 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     }
-
   <img class="ammo-image" [ngSrc]="solution.item.inspectImageLink" height="30" width="43.8" priority alt="ammo">
   <form class="example-form">
     <mat-form-field class="example-full-width">
       <mat-label>Ammo</mat-label>
-      <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+      <input type="text" matInput [formControl]="guessAmmoControl" [matAutocomplete]="auto" [errorStateMatcher]="autoCompleteStateMatcher">
+      @if (guessAmmoControl.getRawValue()) {
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="guessAmmoControl.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+      @if (guessAmmoControl.hasError('required')) {
+        <mat-error>Guess the ammo</mat-error>
+      }
+      @if (guessAmmoControl.hasError('wrong_guess')) {
+        <mat-error>Wrong guess</mat-error>
+      }
       <mat-autocomplete  #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="optionSelected($event.option.value)">
         @for (option of filteredOptions | async; track option) {
         <mat-option [value]="option">{{option.item.name}}</mat-option>
