@@ -34,3 +34,10 @@
   background: #ccc;
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.fixed {
+  float: right;
+  position: sticky;
+  bottom: 10px;
+  right: 10px;
+}

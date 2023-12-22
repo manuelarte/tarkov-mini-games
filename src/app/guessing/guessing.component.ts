@@ -10,6 +10,9 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {GuessingItemComponent} from '../guessing-item/guessing-item.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {GuessingGame} from '../guessing-game';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 const FILTER_AMMO = (x: Ammo) => {
   const is9x18 = x.item.name.startsWith("9x18mm")
@@ -27,6 +30,9 @@ const FILTER_AMMO = (x: Ammo) => {
     MatGridListModule,
     GuessingItemComponent,
     MatExpansionModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   templateUrl: './guessing.component.html',
   styleUrl: './guessing.component.css'
@@ -75,6 +81,15 @@ export class GuessingComponent implements OnInit{
   }
 
   guessed($event: GuessingGame<Ammo>) {
-    console.log($event)
+    // TODO
+  }
+
+  newGame() {
+    this.router.navigateByUrl('/guessing',{skipLocationChange:true}).then(()=>{
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParamsHandling: 'merge'
+      });
+    })
   }
 }

@@ -3,3 +3,10 @@
   width: 100%;
   margin: auto;
 }
+
+.fixed {
+  float: right;
+  position: sticky;
+  bottom: 10px;
+  right: 10px;
+}
