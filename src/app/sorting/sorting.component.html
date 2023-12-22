@@ -1,21 +1,17 @@
 <div class="sorting-div">
 
-  <mat-grid-list cols="2">
-    <mat-grid-tile>
-      <h1>Sort the following ammunition by {{sortedOption.name}}</h1>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div *ngIf="!isLoadingAmmos && ammos" cdkDropList class="ammo-list" [cdkDropListData]="ammos" (cdkDropListDropped)="dropAmmo($event)">
-      @for (ammo of ammos; track ammo) {
-        <div class="ammo-box" cdkDrag [cdkDragDisabled]="isCompleted" [ngStyle]="{'cursor': isCompleted ? 'default' : 'move'}">
-          <app-ammo-list class="ammo-entry" [ammo]="ammo"></app-ammo-list>
-        </div>
-      }
+  <h1>Sort the following ammunition by {{sortedOption.name}}</h1>
+  <div *ngIf="!isLoadingAmmos && ammos" cdkDropList class="ammo-list" [cdkDropListData]="ammos" (cdkDropListDropped)="dropAmmo($event)">
+    @for (ammo of ammos; track ammo) {
+      <div class="ammo-box" cdkDrag [cdkDragDisabled]="isCompleted" [ngStyle]="{'cursor': isCompleted ? 'default' : 'move'}">
+        <app-ammo-list class="ammo-entry" [ammo]="ammo"></app-ammo-list>
       </div>
-      <mat-grid-tile-footer *ngIf="isCompleted">Puzzle completed in {{numberOfMoves}} moves!</mat-grid-tile-footer>
-    </mat-grid-tile>
-  </mat-grid-list>
+    }
+  </div>
+  <div *ngIf="isCompleted">Puzzle completed in {{sortingGame.numberOfTries}} moves!</div>
+
   <button mat-mini-fab color="primary" (click)="newGame()" aria-label="Example icon button with a menu icon">
-    <mat-icon>menu</mat-icon>
+    <mat-icon>refresh</mat-icon>
   </button>
+
 </div>

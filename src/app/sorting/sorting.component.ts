@@ -49,14 +49,17 @@ class SortingBy {
 class SortingGame {
   solution: Ammo[]
   sortingBy: SortingBy
+  numberOfTries: number
 
   constructor(ammos: Ammo[], sortingBy: SortingBy) {
     this.sortingBy = sortingBy
     this.solution = [...ammos]
     this.sortingBy.sort(this.solution)
+    this.numberOfTries = 0
   }
 
   isCompleted(ammos: Ammo[]): boolean {
+    this.numberOfTries++
     if (ammos.length == this.solution.length) {
       return ammos.every((e, index) => this.sortingBy.f(e) === this.sortingBy.f(this.solution[index]))
     }
@@ -77,7 +80,7 @@ const SORTING_OPTIONS = [DAMAGE, PENETRATION_POWER]
 })
 export class SortingComponent implements OnInit {
 
-  protected numberOfItems = 5
+  protected numberOfItems = 4
   protected seed: number = 0
 
   protected isLoadingAmmos = true
@@ -85,7 +88,6 @@ export class SortingComponent implements OnInit {
   protected ammos: Ammo[] = []
 
   protected sortingGame: SortingGame = new SortingGame([], DAMAGE)
-  protected numberOfMoves = 0
   protected isCompleted = false
 
   protected sortedOption: SortingBy = SORTING_OPTIONS[0];
@@ -139,7 +141,6 @@ export class SortingComponent implements OnInit {
   dropAmmo(event: CdkDragDrop<Ammo[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex)
     if (event.currentIndex != event.previousIndex) {
-      this.numberOfMoves++
       this.isCompleted = this.sortingGame.isCompleted(this.ammos)
     }
   }
