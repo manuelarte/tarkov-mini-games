@@ -1,16 +1,16 @@
+<div class="accordion-wrapper">
 @if (isLoadingAmmos) {
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  <ngx-skeleton-loader [count]="numberOfItems" appearance="line"
+                       [theme]="{height: '150px'}"></ngx-skeleton-loader>
 } @else {
-  <div class="accordion-wrapper">
-    <mat-accordion class="example-headers-align" multi>
-      @for (ammo of ammos; track ammo) {
-        <app-guessing-item [solution]=ammo [options]=allAmmos (guessedEvent)="guessed($event)"></app-guessing-item>
-      }
-    </mat-accordion>
-  </div>
-  <button class="fixed" mat-mini-fab color="primary" (click)="newGame()"
-          matTooltip="New game"
+  <mat-accordion class="example-headers-align" multi>
+    @for (ammo of ammos; track ammo) {
+      <app-guessing-item [solution]=ammo [options]=allAmmos (guessedEvent)="guessed($event)"></app-guessing-item>
+    }
+  </mat-accordion>
+  <button class="fixed" mat-mini-fab color="primary" (click)="newGame()" matTooltip="New game"
           aria-label="Example icon button with a menu icon">
     <mat-icon>refresh</mat-icon>
   </button>
 }
+</div>

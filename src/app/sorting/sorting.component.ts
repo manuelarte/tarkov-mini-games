@@ -11,7 +11,6 @@ import {TarkovApiService} from "../../tarkov-api.service";
 import {Ammo} from "../ammo.model";
 import {AmmoListComponent} from "../ammo-list/ammo-list.component";
 import {finalize, Observable} from "rxjs";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {
   CdkDrag,
   CdkDragDrop,
@@ -19,7 +18,6 @@ import {
   CdkDropList,
   moveItemInArray
 } from "@angular/cdk/drag-drop";
-import {MatGridListModule} from "@angular/material/grid-list";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import Utils from "../utils";
@@ -27,6 +25,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {animate, keyframes, state, style, transition, trigger} from '@angular/animations';
 import {SortingBy, SortingGame} from '../model/sorting-game.model';
 import {SortingCompletedComponent} from '../sorting-completed/sorting-completed.component';
+import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 
 
 const DAMAGE = new SortingBy("damage", (a: Ammo) => a.damage)
@@ -41,7 +40,7 @@ const FILTER_AMMO = (x: Ammo) => {
 @Component({
   selector: 'app-sorting',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder, MatGridListModule, MatIconModule, MatButtonModule, MatTooltipModule, SortingCompletedComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, CdkDropList, CdkDrag, CdkDragPlaceholder, MatIconModule, MatButtonModule, MatTooltipModule, SortingCompletedComponent, NgxSkeletonLoaderModule],
   templateUrl: './sorting.component.html',
   styleUrl: './sorting.component.css',
   animations: [
