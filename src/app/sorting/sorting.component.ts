@@ -72,6 +72,11 @@ const DAMAGE = new SortingBy("damage", (a: Ammo) => a.damage)
 const PENETRATION_POWER = new SortingBy("penetration power", (a: Ammo) => a.penetrationPower)
 const SORTING_OPTIONS = [DAMAGE, PENETRATION_POWER]
 
+const FILTER_AMMO = (x: Ammo) => {
+  const isFlare = x.item.name.startsWith("26x75mm flare")
+  return !isFlare
+}
+
 @Component({
   selector: 'app-sorting',
   standalone: true,
@@ -115,7 +120,7 @@ export class SortingComponent implements OnInit {
         });
       }
       this.loadAmmos().subscribe(allAmmos => {
-        this.allAmmos = allAmmos
+        this.allAmmos = allAmmos.filter(FILTER_AMMO)
         this.createGame()
       })
 
