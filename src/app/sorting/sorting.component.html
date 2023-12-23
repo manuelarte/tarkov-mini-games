@@ -1,8 +1,14 @@
 <div class="sorting-div">
 
+  @if (isCompleted) {
+    <div style="{'position': 'relative'}">
+      <app-sorting-completed [sortingGame]="sortingGame" (newGameEvent)="newGame()"></app-sorting-completed>
+    </div>
+  }
+
   <h1>Sort the following ammunition by {{sortedOption.name}}</h1>
   <div *ngIf="!isLoadingAmmos && ammos" cdkDropList class="ammo-list" [cdkDropListData]="ammos" (cdkDropListDropped)="dropAmmo($event)">
-    <div>
+    <div [@shakeit]="animationState" (@shakeit.done)="shakeEnd()">
       @for (ammo of ammos; track ammo) {
         <div class="ammo-box" cdkDrag [cdkDragDisabled]="isCompleted" [ngStyle]="{'cursor': isCompleted ? 'default' : 'move'}">
           <app-ammo-list class="ammo-entry" [ammo]="ammo"></app-ammo-list>
@@ -10,12 +16,13 @@
       }
     </div>
   </div>
-  <div *ngIf="isCompleted">Puzzle completed in {{sortingGame.numberOfTries}} moves!</div>
-
-  <button class="fixed" mat-mini-fab color="primary" (click)="newGame()"
-          matTooltip="New game"
-          aria-label="Example icon button with a menu icon">
-    <mat-icon>refresh</mat-icon>
-  </button>
 
 </div>
+
+<button class="fixed" mat-mini-fab color="primary" (click)="newGame()"
+        matTooltip="New game"
+        aria-label="Example icon button with a menu icon">
+  <mat-icon>refresh</mat-icon>
+</button>
+
+

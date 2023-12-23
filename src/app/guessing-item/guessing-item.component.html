@@ -13,7 +13,7 @@
        [ngSrc]="solution.item.inspectImageLink" width="87.6" height="60"  priority alt="ammo"
        (click)="openImageDialog(solution.item.inspectImageLink)">
     <mat-form-field class="example-full-width">
-      <mat-label>Ammo</mat-label>
+      <mat-label>Type the ammo</mat-label>
       <input type="text" matInput [formControl]="guessAmmoControl" [matAutocomplete]="auto" [errorStateMatcher]="autoCompleteStateMatcher">
       @if (guessAmmoControl.getRawValue()) {
         <button matSuffix mat-icon-button aria-label="Clear" (click)="guessAmmoControl.setValue('')">

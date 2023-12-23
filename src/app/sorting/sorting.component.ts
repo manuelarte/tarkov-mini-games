@@ -24,49 +24,10 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import Utils from "../utils";
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {animate, keyframes, state, style, transition, trigger} from '@angular/animations';
+import {SortingBy, SortingGame} from '../model/sorting-game.model';
+import {SortingCompletedComponent} from '../sorting-completed/sorting-completed.component';
 
-class SortingBy {
-  name: string
-  f: (a: Ammo) => number
-
-  constructor(name: string, f: (a: Ammo) => number) {
-    this.name = name
-    this.f = f
-  }
-
-  sort(ammos: Ammo[]) {
-    ammos.sort((a, b) => {
-      if (this.f(a) > this.f(b)) {
-        return -1
-      } else if (this.f(a) < this.f(b)) {
-        return 1
-      } else {
-        return 0
-      }
-    })
-  }
-}
-
-class SortingGame {
-  solution: Ammo[]
-  sortingBy: SortingBy
-  numberOfTries: number
-
-  constructor(ammos: Ammo[], sortingBy: SortingBy) {
-    this.sortingBy = sortingBy
-    this.solution = [...ammos]
-    this.sortingBy.sort(this.solution)
-    this.numberOfTries = 0
-  }
-
-  isCompleted(ammos: Ammo[]): boolean {
-    this.numberOfTries++
-    if (ammos.length == this.solution.length) {
-      return ammos.every((e, index) => this.sortingBy.f(e) === this.sortingBy.f(this.solution[index]))
-    }
-    return false
-  }
-}
 
 const DAMAGE = new SortingBy("damage", (a: Ammo) => a.damage)
 const PENETRATION_POWER = new SortingBy("penetration power", (a: Ammo) => a.penetrationPower)
@@ -80,9 +41,30 @@ const FILTER_AMMO = (x: Ammo) => {
 @Component({
   selector: 'app-sorting',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder, MatGridListModule, MatIconModule, MatButtonModule, MatTooltipModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder, MatGridListModule, MatIconModule, MatButtonModule, MatTooltipModule, SortingCompletedComponent],
   templateUrl: './sorting.component.html',
-  styleUrl: './sorting.component.css'
+  styleUrl: './sorting.component.css',
+  animations: [
+    trigger('shakeit', [
+      state('shakestart', style({
+        transform: 'scale(1)',
+      })),
+      state('shakeend', style({
+        transform: 'scale(1)',
+      })),
+      transition('shakestart => shakeend', animate('800ms ease-in',
+        keyframes([
+        style({transform: 'translate3d(-1px, 0, 0)', offset: 0.1}),
+        style({transform: 'translate3d(2px, 0, 0)', offset: 0.2}),
+        style({transform: 'translate3d(-4px, 0, 0)', offset: 0.3}),
+        style({transform: 'translate3d(4px, 0, 0)', offset: 0.4}),
+        style({transform: 'translate3d(-4px, 0, 0)', offset: 0.5}),
+        style({transform: 'translate3d(4px, 0, 0)', offset: 0.6}),
+        style({transform: 'translate3d(-4px, 0, 0)', offset: 0.7}),
+        style({transform: 'translate3d(2px, 0, 0)', offset: 0.8}),
+        style({transform: 'translate3d(-1px, 0, 0)', offset: 0.9}),
+      ]))),
+    ])]
 })
 export class SortingComponent implements OnInit {
 
@@ -93,15 +75,26 @@ export class SortingComponent implements OnInit {
   protected allAmmos: Ammo[] = []
   protected ammos: Ammo[] = []
 
-  protected sortingGame: SortingGame = new SortingGame([], DAMAGE)
+  protected sortingGame: SortingGame = new SortingGame([], new Date(), DAMAGE)
   protected isCompleted = false
 
   protected sortedOption: SortingBy = SORTING_OPTIONS[0];
+
+  protected animationState = ""
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private api: TarkovApiService,
   ) {
+  }
+
+  shakeIt() {
+    this.animationState = (this.animationState === 'shakestart' ? 'shakeend' : 'shakestart');
+  }
+
+  // @ts-ignore
+  shakeEnd(){
+    this.animationState = 'shakeend';
   }
 
   ngOnInit(): void {
@@ -136,7 +129,7 @@ export class SortingComponent implements OnInit {
 
   private createGame() {
     this.ammos = this.getRandomAmmos(this.allAmmos)
-    this.sortingGame = new SortingGame(this.ammos, this.sortedOption)
+    this.sortingGame = new SortingGame(this.ammos, new Date(), this.sortedOption)
   }
 
 
@@ -148,6 +141,9 @@ export class SortingComponent implements OnInit {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex)
     if (event.currentIndex != event.previousIndex) {
       this.isCompleted = this.sortingGame.isCompleted(this.ammos)
+      if (!this.isCompleted) {
+        this.shakeIt()
+      }
     }
   }
 
