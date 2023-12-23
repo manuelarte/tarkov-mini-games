@@ -1,0 +1,7 @@
+<div [@fading]="animationState" class="align-center">
+  <h1>Congratulations!</h1>
+  <button mat-fab color="primary" aria-label="game finished" (click)="buttonClicked()">
+   <mat-icon>check</mat-icon>
+  </button>
+  <p>You completed the puzzle in {{sortingGame.numberOfTries}} moves</p>
+</div>

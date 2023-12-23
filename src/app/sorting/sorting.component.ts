@@ -26,6 +26,7 @@ import Utils from "../utils";
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {animate, keyframes, state, style, transition, trigger} from '@angular/animations';
 import {SortingBy, SortingGame} from '../model/sorting-game.model';
+import {SortingCompletedComponent} from '../sorting-completed/sorting-completed.component';
 
 
 const DAMAGE = new SortingBy("damage", (a: Ammo) => a.damage)
@@ -40,7 +41,7 @@ const FILTER_AMMO = (x: Ammo) => {
 @Component({
   selector: 'app-sorting',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder, MatGridListModule, MatIconModule, MatButtonModule, MatTooltipModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, AmmoListComponent, MatProgressSpinnerModule, CdkDropList, CdkDrag, CdkDragPlaceholder, MatGridListModule, MatIconModule, MatButtonModule, MatTooltipModule, SortingCompletedComponent],
   templateUrl: './sorting.component.html',
   styleUrl: './sorting.component.css',
   animations: [
@@ -79,7 +80,7 @@ export class SortingComponent implements OnInit {
 
   protected sortedOption: SortingBy = SORTING_OPTIONS[0];
 
-  animationState = ""
+  protected animationState = ""
   constructor(
     private route: ActivatedRoute,
     private router: Router,
