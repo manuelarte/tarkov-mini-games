@@ -27,8 +27,12 @@
         <mat-error>Wrong guess</mat-error>
       }
       <mat-autocomplete  #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="optionSelected($event.option.value)">
-        @for (option of filteredOptions | async; track option) {
-        <mat-option [value]="option">{{option.item.name}}</mat-option>
+        @for (group of filteredOptions | async; track group) {
+          <mat-optgroup [label]="group.caliber">
+            @for (option of group.ammos; track option) {
+              <mat-option [value]="option">{{option.item.shortName}}</mat-option>
+            }
+          </mat-optgroup>
         }
       </mat-autocomplete>
     </mat-form-field>

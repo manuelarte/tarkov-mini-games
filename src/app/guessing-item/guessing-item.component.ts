@@ -6,15 +6,7 @@ import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroupDirective,
-  FormsModule,
-  NgForm,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import {FormControl, FormGroupDirective, FormsModule, NgForm, ReactiveFormsModule, Validators} from '@angular/forms';
 import {EMPTY, Observable, startWith} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -26,7 +18,6 @@ import {
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
-  MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
 import {GuessingGame} from '../guessing-game';
@@ -45,6 +36,12 @@ class WrongGuessError<T> {
   constructor(guess: T) {
     this.guess = guess
   }
+}
+
+interface AmmoGroup {
+  caliber: string
+  ammos: Ammo[]
+
 }
 
 @Component({
@@ -80,7 +77,7 @@ export class GuessingItemComponent implements OnInit{
   protected guessAmmoControl = new FormControl<string | Ammo>('', [Validators.required]);
   autoCompleteStateMatcher = new AmmoStateMatcher();
 
-  filteredOptions: Observable<Ammo[]> = EMPTY;
+  filteredOptions: Observable<AmmoGroup[]> = EMPTY;
 
   protected isCompleted = false
   constructor(public dialog: MatDialog) {
@@ -93,7 +90,7 @@ export class GuessingItemComponent implements OnInit{
       startWith(''),
       map(value => {
         const name = typeof value === 'string' ? value : value?.item.name;
-        return name ? this._filter(name as string) : this.options.slice();
+        return name ? this._filter(name as string) : this._groupByCaliber(this.options);
       }),
     );
   }
@@ -112,9 +109,25 @@ export class GuessingItemComponent implements OnInit{
     }
   }
 
-  private _filter(name: string): Ammo[] {
+  private _groupByCaliber(ammos: Ammo[]): AmmoGroup[] {
+    const test = ammos.reduce((acc, curr) => {
+      let key = curr.caliber
+      if (!acc[key]) {
+        acc[key] = []
+      }
+      acc[key].push(curr);
+      return acc;
+    }, Object.create(null))
+    return Object.keys(test).map(key => ({
+      caliber: key,
+      ammos: test[key]
+    }))
+  }
+
+  private _filter(name: string): AmmoGroup[] {
     const filterValue = name.toLowerCase();
-    return this.options.filter(option => option.item.name.toLowerCase().includes(filterValue));
+    const filteredAmmos = this.options.filter(option => option.item.name.toLowerCase().includes(filterValue));
+    return this._groupByCaliber(filteredAmmos)
   }
 
 
