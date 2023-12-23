@@ -3,16 +3,15 @@ import {TarkovApiService} from "../../tarkov-api.service";
 import {finalize, Observable} from 'rxjs';
 import {Ammo} from "../ammo.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CommonModule} from "@angular/common";
 import Utils from "../utils";
-import {MatGridListModule} from "@angular/material/grid-list";
 import {GuessingItemComponent} from '../guessing-item/guessing-item.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {GuessingGame} from '../guessing-game';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 
 const FILTER_AMMO = (x: Ammo) => {
   const is9x18 = x.item.name.startsWith("9x18mm")
@@ -26,13 +25,12 @@ const FILTER_AMMO = (x: Ammo) => {
   standalone: true,
   imports: [
     CommonModule,
-    MatProgressSpinnerModule,
-    MatGridListModule,
     GuessingItemComponent,
     MatExpansionModule,
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    NgxSkeletonLoaderModule,
   ],
   templateUrl: './guessing.component.html',
   styleUrl: './guessing.component.css'
