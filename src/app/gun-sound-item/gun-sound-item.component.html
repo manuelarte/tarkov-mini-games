@@ -1,6 +1,6 @@
 <div class="container">
   <label id="example-radio-group-label">
-    <audio id="audio" [src]="'assets/'+gunSoundGame.gunSound.audio" [volume]="1" controls controlsList="nodownload"></audio>
+    <audio id="audio" (play)="audioPlayed($event)" [src]="'assets/'+gunSoundGame.gunSound.audio" [volume]="1" controls controlsList="nodownload"></audio>
   </label>
   <mat-radio-group required
     aria-labelledby="example-radio-group-label"

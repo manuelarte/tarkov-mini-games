@@ -30,6 +30,8 @@ export class GunSoundItemComponent {
 
   @Output() guessedEvent: EventEmitter<Item> = new EventEmitter<Item>()
 
+  private currentAudioTime = 0.01
+
   constructor() {
   }
 
@@ -37,4 +39,12 @@ export class GunSoundItemComponent {
     this.guessedEvent.emit(this.guess)
   }
 
+  audioPlayed($event: Event) {
+    // @ts-ignore
+    const currentTime = $event.target.currentTime
+    if (currentTime < this.currentAudioTime) {
+      this.gunSoundGame.audioPlayed()
+    }
+    this.currentAudioTime = currentTime
+  }
 }
