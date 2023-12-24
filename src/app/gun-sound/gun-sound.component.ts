@@ -9,15 +9,15 @@ import {CommonModule} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {gunSoundAssets} from "./gun-sound-assets";
 import Utils from "../utils";
-
-export interface GunSound {
-  audio: string,
-  weapon: string,
-  isSilenced?: boolean
-}
+import {GunSoundGame} from '../model/gun-soung-game.model';
 
 const special = ['zeroth','first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
 const deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet'];
+
+const FILTER_GUNS = (x: Item) => {
+  const isFlare = x.name.startsWith("RSP-30")
+  return !isFlare
+}
 
 @Component({
   selector: 'app-gun-sound',
@@ -39,10 +39,11 @@ export class GunSoundComponent implements OnInit{
 
   protected seed = 0
   protected numberOfItems = 4
+  protected numberOfOptions = 8
 
   protected allGuns: Item[] = []
 
-  protected gunSounds: GunSound[] = []
+  protected gunSoundGames: GunSoundGame[] = []
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -64,9 +65,24 @@ export class GunSoundComponent implements OnInit{
           queryParamsHandling: 'merge'
         });
       }
-      this.loadGuns().subscribe(allGuns => this.allGuns = allGuns)
-      this.gunSounds = Utils.getRandomNElements(this.gunSoundAssets, this.seed, this.numberOfItems)
+      this.loadGuns().subscribe(allGuns => {
+        this.allGuns = Utils.shuffle(allGuns.filter(FILTER_GUNS), this.seed)
+        this._createGame()
+      })
+
     });
+
+  }
+
+  private _createGame() {
+    const gunSounds = Utils.getRandomNElements(this.gunSoundAssets, this.seed, this.numberOfItems)
+    gunSounds.forEach(gs => {
+      // filter allAmmos once option and the next 3
+      const n = this.allGuns.length
+      const index = this.allGuns.findIndex((v,i) => v.id === gs.weaponId)
+      const options = Utils.shuffle(this.allGuns.slice(index, (index + this.numberOfOptions % n + n) % n), this.seed+index)
+      this.gunSoundGames.push(new GunSoundGame(gs, options))
+    })
 
   }
 

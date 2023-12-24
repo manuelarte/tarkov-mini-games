@@ -4,9 +4,8 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import {gunSoundAssets} from "../gun-sound/gun-sound-assets";
-import {GunSound} from "../gun-sound/gun-sound.component";
 import {Item} from "../item.model";
+import {GunSoundGame} from '../model/gun-soung-game.model';
 
 @Component({
   selector: 'app-gun-sound-item',
@@ -24,11 +23,9 @@ import {Item} from "../item.model";
 export class GunSoundItemComponent {
 
   // @ts-ignore
-  favoriteSeason: string;
-  seasons: string[] = ['Winter', 'Spring', 'Summer', 'Autumn'];
+  protected guess: Item;
 
-  protected readonly gunSoundAssets = gunSoundAssets;
-  @Input({required: true}) gunSound!: GunSound;
+  @Input({required: true}) gunSoundGame!: GunSoundGame;
   @Input({required: true}) options!: Item[];
 
   constructor() {

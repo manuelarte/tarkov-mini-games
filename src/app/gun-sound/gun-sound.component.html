@@ -1,13 +1,13 @@
 @if (!isLoadingGuns) {
   <h3>Guess the gun sound</h3>
   <mat-tab-group animationDuration="200ms">
-    @for (gunSound of gunSounds; track gunSounds; let idx = $index) {
-      <mat-tab [label]="stringifyNumber(idx+1)">
-        <app-gun-sound-item [gunSound]="gunSound" [options]="allGuns"></app-gun-sound-item>
+    @for (gunSoundGame of gunSoundGames; track gunSoundGame; let idx = $index) {
+      <mat-tab [label]="stringifyNumber(idx+1) | titlecase">
+        <app-gun-sound-item [gunSoundGame]="gunSoundGame" [options]="allGuns"></app-gun-sound-item>
       </mat-tab>
     }
     <mat-tab label="Results">
-      Results
+      TODO Results
     </mat-tab>
 
   </mat-tab-group>
