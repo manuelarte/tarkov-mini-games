@@ -2,8 +2,8 @@
   <h3>Guess the gun sound</h3>
   <mat-tab-group animationDuration="200ms">
     @for (gunSoundGame of gunSoundGames; track gunSoundGame; let idx = $index) {
-      <mat-tab [label]="stringifyNumber(idx+1) | titlecase">
-        <app-gun-sound-item [gunSoundGame]="gunSoundGame" [options]="allGuns"></app-gun-sound-item>
+      <mat-tab [label]="Utils.stringifyNumber(idx+1) | titlecase">
+        <app-gun-sound-item [gunSoundGame]="gunSoundGame" [options]="allGuns" (guessedEvent)="guessed($event, idx)"></app-gun-sound-item>
       </mat-tab>
     }
     <mat-tab label="Results">

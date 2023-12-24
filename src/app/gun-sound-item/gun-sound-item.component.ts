@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {MatRadioModule} from '@angular/material/radio';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {MatRadioChange, MatRadioModule} from '@angular/material/radio';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
@@ -28,7 +28,13 @@ export class GunSoundItemComponent {
   @Input({required: true}) gunSoundGame!: GunSoundGame;
   @Input({required: true}) options!: Item[];
 
+  @Output() guessedEvent: EventEmitter<Item> = new EventEmitter<Item>()
+
   constructor() {
+  }
+
+  guessed(event: MatRadioChange) {
+    this.guessedEvent.emit(this.guess)
   }
 
 }

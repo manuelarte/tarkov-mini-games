@@ -2,10 +2,10 @@
   <label id="example-radio-group-label">
     <audio id="audio" [src]="'assets/'+gunSoundGame.gunSound.audio" [volume]="1" controls controlsList="nodownload"></audio>
   </label>
-  <mat-radio-group
+  <mat-radio-group required
     aria-labelledby="example-radio-group-label"
     class="example-radio-group"
-    [(ngModel)]="guess">
+    [(ngModel)]="guess" (change)="guessed($event)">
     @for (option of gunSoundGame.options; track option) {
       <mat-radio-button class="example-radio-button" [value]="option">{{option.name}}</mat-radio-button>
     }

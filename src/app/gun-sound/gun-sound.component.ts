@@ -11,9 +11,6 @@ import {gunSoundAssets} from "./gun-sound-assets";
 import Utils from "../utils";
 import {GunSoundGame} from '../model/gun-soung-game.model';
 
-const special = ['zeroth','first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
-const deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet'];
-
 const FILTER_GUNS = (x: Item) => {
   const isFlare = x.name.startsWith("RSP-30")
   return !isFlare
@@ -65,7 +62,7 @@ export class GunSoundComponent implements OnInit{
           queryParamsHandling: 'merge'
         });
       }
-      this.loadGuns().subscribe(allGuns => {
+      this._loadGuns().subscribe(allGuns => {
         this.allGuns = Utils.shuffle(allGuns.filter(FILTER_GUNS), this.seed)
         this._createGame()
       })
@@ -86,7 +83,7 @@ export class GunSoundComponent implements OnInit{
 
   }
 
-  private loadGuns(): Observable<Item[]> {
+  private _loadGuns(): Observable<Item[]> {
     this.isLoadingGuns = true
     return this.api.getGuns().pipe(
       finalize(() => this.isLoadingGuns = false)
@@ -94,12 +91,9 @@ export class GunSoundComponent implements OnInit{
   }
 
 
+  protected readonly Utils = Utils;
 
-  stringifyNumber(n: number) {
-    if (n < 20) return special[n];
-    if (n%10 === 0) return deca[Math.floor(n/10)-2] + 'ieth';
-    return deca[Math.floor(n/10)-2] + 'y-' + special[n%10];
+  guessed($event: Item, idx: number) {
+    console.log("guessed", $event, idx)
   }
-
-
 }
