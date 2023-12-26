@@ -10,3 +10,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Adding sorting ammo minigame
 - Adding guess the ammo minigame
+- Adding guess audio minigame

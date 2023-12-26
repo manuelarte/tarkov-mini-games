@@ -6,8 +6,11 @@
     aria-labelledby="example-radio-group-label"
     class="example-radio-group"
     [(ngModel)]="guess" (change)="guessed($event)">
-    @for (option of gunSoundGame.options; track option) {
-      <mat-radio-button class="example-radio-button" [value]="option">{{option.name}}</mat-radio-button>
+    @for (option of gunSoundGame.options; track option; let i = $index) {
+      <mat-radio-button class="example-radio-button" [value]="option"
+                        [@enter]="{ value: '', params: { delay: i * 20 } }">
+        {{option.name}}
+      </mat-radio-button>
     }
   </mat-radio-group>
 </div>

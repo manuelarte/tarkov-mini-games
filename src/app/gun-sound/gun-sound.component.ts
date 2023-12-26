@@ -4,11 +4,11 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {TarkovApiService} from '../../tarkov-api.service';
 import {finalize, Observable} from 'rxjs';
 import {Item} from '../item.model';
-import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {CommonModule} from "@angular/common";
-import {ActivatedRoute, Router} from "@angular/router";
-import {gunSoundAssets} from "./gun-sound-assets";
-import Utils from "../utils";
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {CommonModule} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {gunSoundAssets} from './gun-sound-assets';
+import Utils from '../utils';
 import {GunSoundGame} from '../model/gun-soung-game.model';
 
 const FILTER_GUNS = (x: Item) => {
@@ -40,7 +40,7 @@ export class GunSoundComponent implements OnInit{
 
   protected allGuns: Item[] = []
 
-  protected gunSoundGames: GunSoundGame[] = []
+  protected gunSoundGames!: GunSoundGame[]
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -64,6 +64,7 @@ export class GunSoundComponent implements OnInit{
       }
       this._loadGuns().subscribe(allGuns => {
         this.allGuns = Utils.shuffle(allGuns.filter(FILTER_GUNS), this.seed)
+        this.gunSoundGames = []
         this._createGame()
       })
 
@@ -73,12 +74,21 @@ export class GunSoundComponent implements OnInit{
 
   private _createGame() {
     const gunSounds = Utils.getRandomNElements(this.gunSoundAssets, this.seed, this.numberOfItems)
-    gunSounds.forEach(gs => {
-      // filter allAmmos once option and the next 3
+    gunSounds.forEach((gs, idx) => {
+      // filter all Ammos once option and the next 3
       const n = this.allGuns.length
       const index = this.allGuns.findIndex((v,i) => v.id === gs.weaponId)
-      const options = Utils.shuffle(this.allGuns.slice(index, (index + this.numberOfOptions % n + n) % n), this.seed+index)
-      this.gunSoundGames.push(new GunSoundGame(gs, options))
+      const endIndex = (index + this.numberOfOptions % n + n) % n
+      let options: Item[]
+      if (endIndex > index) {
+        options = this.allGuns.slice(index, endIndex)
+      } else {
+        options = this.allGuns.slice(index)
+        const left = this.numberOfOptions - options.length
+        options = options.concat(this.allGuns.slice(0, left))
+      }
+      const shuffledOptions = Utils.shuffle(options, this.seed+index)
+      this.gunSoundGames.push(new GunSoundGame(gs, shuffledOptions))
     })
 
   }
@@ -94,6 +104,32 @@ export class GunSoundComponent implements OnInit{
   protected readonly Utils = Utils;
 
   guessed($event: Item, idx: number) {
-    console.log("guessed", $event, idx)
+    this.gunSoundGames[idx].guessGun($event)
+  }
+
+  isGameFinished(): boolean {
+    return this.gunSoundGames.every(gsg => gsg.isGameFinished())
+  }
+
+  isGameActive(idx: number): boolean {
+    if (this.gunSoundGames[idx].isGameFinished()) {
+      return false
+    }
+    let i = 0
+    for (i = 0; i <= idx-1; i++) {
+      if (!this.gunSoundGames[i].isGameFinished())  {
+        break
+      }
+    }
+    return i == idx
+  }
+
+  selectedTab(): number {
+    for (let i = 0; i < this.gunSoundGames.length; i++) {
+      if (!this.gunSoundGames[i].isGameFinished())  {
+        return i
+      }
+    }
+    return this.gunSoundGames.length
   }
 }

@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {Item} from "../item.model";
 import {GunSoundGame} from '../model/gun-soung-game.model';
+import {fadeInUpOnEnterAnimation} from 'angular-animations';
 
 @Component({
   selector: 'app-gun-sound-item',
@@ -18,7 +19,10 @@ import {GunSoundGame} from '../model/gun-soung-game.model';
     MatButtonModule
   ],
   templateUrl: './gun-sound-item.component.html',
-  styleUrl: './gun-sound-item.component.css'
+  styleUrl: './gun-sound-item.component.css',
+  animations: [
+    fadeInUpOnEnterAnimation({ anchor: 'enter'}),
+  ]
 })
 export class GunSoundItemComponent {
 
@@ -36,6 +40,7 @@ export class GunSoundItemComponent {
   }
 
   guessed(event: MatRadioChange) {
+    this.gunSoundGame.guessGun(this.guess)
     this.guessedEvent.emit(this.guess)
   }
 

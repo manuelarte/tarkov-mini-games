@@ -3,6 +3,7 @@ import {Item} from '../item.model';
 export class GunSoundGame {
   gunSound: GunSound
   options: Item[]
+  guess!: Item
   numberOfPlays: number
 
   constructor(gunSound: GunSound, options: Item[]) {
@@ -17,8 +18,20 @@ export class GunSoundGame {
     this.numberOfPlays++
   }
 
-  guess(gun: Item): boolean {
-    return this.gunSound.weaponId === gun.id
+  guessGun(gun: Item): boolean {
+    this.guess = gun
+    return this.isGuessed()
+  }
+
+  isGuessed(): boolean {
+    if (this.guess) {
+      return this.gunSound.weaponId === this.guess.id
+    }
+    return false
+}
+
+  isGameFinished(): boolean {
+    return this.guess != undefined
   }
 }
 

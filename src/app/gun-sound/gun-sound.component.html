@@ -1,12 +1,17 @@
 @if (!isLoadingGuns) {
-  <h3>Guess the gun sound</h3>
-  <mat-tab-group animationDuration="200ms">
+  <h3>Guess the gun sound {{gunSoundGames.length}}</h3>
+  <mat-tab-group animationDuration="200ms" [selectedIndex]="selectedTab()">
     @for (gunSoundGame of gunSoundGames; track gunSoundGame; let idx = $index) {
-      <mat-tab [label]="Utils.stringifyNumber(idx+1) | titlecase">
-        <app-gun-sound-item [gunSoundGame]="gunSoundGame" [options]="allGuns" (guessedEvent)="guessed($event, idx)"></app-gun-sound-item>
+      <mat-tab [label]="Utils.stringifyNumber(idx+1) | titlecase" [disabled]="!isGameActive(idx)">
+        <ng-template matTabContent>
+          <app-gun-sound-item
+            [gunSoundGame]="gunSoundGame"
+            [options]="allGuns"
+            (guessedEvent)="guessed($event, idx)"></app-gun-sound-item>
+        </ng-template>
       </mat-tab>
     }
-    <mat-tab label="Results" disabled>
+    <mat-tab label="Results" [disabled]="!isGameFinished()">
       TODO Results
     </mat-tab>
 
